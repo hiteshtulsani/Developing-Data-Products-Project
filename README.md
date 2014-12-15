@@ -26,4 +26,11 @@ File Name | Description
 [stylesheet.css](https://github.com/hiteshtulsani/Developing-Data-Products-Project/blob/master/Simulating-Sampling-Distributions/www/stylesheet.css) | Style Sheet used in Shiny App
 
 
-:heart: _Thanks to all the peers visiting this page for evaluations. The journey doesn't end here.. Waiting for Capstone! _
+:metal: :metal: :metal:
+
+:+1: Thanks to all the peers visiting this page for evaluations - your comments mean a lot.  
+
+:+1: :+1: Special Thanks to *Prof. Roger Peng*, *Prof. Brian Caffo*, *Prof. Jeff Leek* and *Community TA's* for their immense contribution in making Data science courses fun!!
+
+
+:walking: The journey doesn't end here.. Waiting for Capstone!
