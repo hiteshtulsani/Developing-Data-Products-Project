@@ -21,10 +21,11 @@ File Name | Description
 [index.rmd](https://github.com/hiteshtulsani/Developing-Data-Products-Project/blob/master/index.Rmd) |  RMD used to Generate the Pitch
 [index.html](http://hiteshtulsani.github.io/Developing-Data-Products-Project/index.html#1)| The pitch presentation
 [./assets/img/*.png](https://github.com/hiteshtulsani/Developing-Data-Products-Project/blob/master/assets/img)|Images used in the Pitch presentation
-[ui.R]() | ui.R file for Shiny Application
-[server.R]() | server.R file for Shiny Application
+[ui.R](https://github.com/hiteshtulsani/Developing-Data-Products-Project/blob/master/Simulating-Sampling-Distributions/ui.r) | ui.R file for Shiny Application
+[server.R](https://github.com/hiteshtulsani/Developing-Data-Products-Project/blob/master/Simulating-Sampling-Distributions/server.r) | server.R file for Shiny Application
 [stylesheet.css](https://github.com/hiteshtulsani/Developing-Data-Products-Project/blob/master/Simulating-Sampling-Distributions/www/stylesheet.css) | Style Sheet used in Shiny App
 
+The shiny application can be accessed [here](http://hiteshtulsani.shinyapps.io/Simulating-Sampling-Distributions).
 
 :metal: :metal: :metal:
 
