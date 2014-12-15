@@ -1,0 +1,25 @@
+th {
+	font-size: 11px;
+	color: #333333;
+}
+td{
+	font-size: 11px;
+}
+
+label{
+	font-size: 13px;
+}
+
+.aboutdensity {
+	font-size: 13px;
+}
+.item {
+	font-size: 13px;
+}
+.btn {
+	font-size: 13px;
+}
+
+input[type="number"] {
+	font-size: 12px;
+}

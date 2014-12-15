@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simulating Sampling Distributions</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Simulating Sampling Distributions">
+  <meta name="author" content="Hitesh Tulsani">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Simulating Sampling Distributions</h1>
+    <h2>Developing Data Products Course Project</h2>
+    <p>Hitesh Tulsani<br/>Lead Consultant, Advanced Analytics</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:white;">
+  <hgroup>
+    <h1>About Sampling Distributions</h1>
+  </hgroup>
+  <article data-timings="">
+    <p style="text-align:justify; font-size:13px; margin:0px 0 20px 0"> For any population, with mean $\mu$ and variance $\sigma^2$, if we repeatedly take samples of given size and calculate arithmetic mean $\bar x$ for each sample, this static is called sample mean. Each sample will have it's own average value and the distribution of these averages is called sampling distribution. This distribution is close to normal $\mathscr{N} (\mu,\frac{\sigma^2}{n})$, where $n$ is the sample size; even when the population distribution is not normal. Source: <a href="http://en.wikipedia.org/wiki/Sampling_distribution">Wikipedia</a></p>
+
+<h1>About this Application</h1>
+
+<p style="text-align:justify; font-size:13px; margin:10px 0 20px 0"> This application simulates sampling distributions from 3 choices - Exponential, Normal and Poisson, based on the user input and compares the simulation output with a Normal distribution. The parameters like $\mu, \sigma, \lambda, n$ and <strong>no. of repetitions</strong> are customizable within reasonable limits. The user is presented with UI shown in Image Grab. Top-left of the app page has static description, top-right contains the output plot of simulation which changes upon clicking the <strong>Simulate!</strong> button. The user selects the distribution to simulate from and enters various parameters. Bottom-right of the app displays a table comparing Theoritical and Simulation values. Inspiration for this app comes from <strong>Statistical Inference class Project</strong>.
+<img style="margin: 20px 0px 0px 0px" class=center  src=./assets/img/ui.png height=350></img>
+</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:white;">
+  <hgroup>
+    <h1>Application Flow and Logic</h1>
+  </hgroup>
+  <article data-timings="">
+    <p style="text-align:justify; font-size:13px; margin:10px 0 20px 0"> The user is presented with 3 choices and starts by selecting the Distribution to simulate using <code>selectInput</code> widget. This input is then used in <code>conditionalPanel</code> controls to display the slider controls for entering $\lambda$ for Exponential and Poisson Distributions and $\mu$ and $\sigma$ for Normal Distribution. <strong>Number of simulations</strong> and <strong>Sample Size</strong> are selected using <code>sliderInput</code> and <code>numericInput</code> widgets. The simulation is performed on clicking Simulate button and the numeric results are displayed in a table alongside. 
+
+<img style="margin: 20px 20px 20px 20px" class=center src=./assets/img/inputs.png height=150></img> 
+
+The rendered plot is displayed at the top-right side of the screen. It compares the simulated <span style="color: #87CEEB">sampling distribution</span> with that of <strong>normal distribution </strong> 
+
+<img class=center src=./assets/img/plot.png height=250></img>
+
+</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:white;">
+  <hgroup>
+    <h1>server.R Code for Poisson Distribution</h1>
+  </hgroup>
+  <article data-timings="">
+    <p style="text-align:justify; font-size:13px; margin:10px 0 20px 0"> 
+The code for Poisson Distribution with mean $\lambda = 5, nosim = 1000$ and $n = 50$ is given below. The output plot is shown on the next slide.</p>
+
+<pre><code class="r">#This code represents only a portion of server.R code and is wrapped in renderPlot function
+set.seed(23051983)
+rpois.lambda &lt;- 5 # from Slider Input
+number.samples&lt;-50 # from Numeric Input
+nosim&lt;-1000 #from Slider Input
+input&lt;-data.frame(number.samples,nosim,rpois.lambda) #created to keep the code intact
+
+means &lt;- apply(matrix(rpois(input$number.samples * input$nosim, input$rpois.lambda),
+input$nosim), 1, mean) #Sampling of means
+
+theoretical.mean &lt;- input$rpois.lambda #this changes for selected distribution
+plot.sd &lt;- sqrt(input$rpois.lambda) #this changes for selected distribution
+
+mean.of.sample.means &lt;- mean(means)
+variance.of.sample.means &lt;- var(means)*input$number.samples
+sd.of.sample.means &lt;- sd(means)*sqrt(input$number.samples)
+
+cols &lt;- c(&quot;Simulated&quot;=&quot;#87CEEB&quot;,&quot;Normal&quot;=&quot;#000000&quot;) #for Legend generation
+
+ggplot(data = data.frame(means), aes(x = means)) +
+geom_histogram(aes(y = ..density.., colour = &quot;Simulated&quot;),fill = &quot;white&quot;,binwidth=0.1) +
+geom_density(colour = &quot;lightblue&quot;,size = 1) +
+geom_vline(xintercept = mean.of.sample.means, color = &quot;lightblue&quot;,size = 1.5) +
+stat_function(aes(colour =&quot;Normal&quot;),fun = dnorm, size = 1, args = list(mean = theoretical.mean,sd =   (plot.sd/sqrt(input$number.samples)))) +
+scale_colour_manual(&quot;&quot;,values = cols) +
+geom_vline(xintercept = theoretical.mean,color = &quot;black&quot;, size = 1) +
+theme_bw()
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:white;">
+  <hgroup>
+    <h1>Output Plot</h1>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" /></p>
+
+<h1>Application</h1>
+
+<p><a href="http://hiteshtulsani.shinyapps.io/Simulating-Sampling-Distributions">Simulating Sampling Distributions</a></p>
+
+<h1>Thank You!</h1>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='About Sampling Distributions'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Application Flow and Logic'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='server.R Code for Poisson Distribution'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Output Plot'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
